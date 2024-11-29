@@ -2,7 +2,7 @@ Local Run :-
 `npm run dev`
 
 [Live Demo]- [https://editing-capabilities-jjon.vercel.app/]
-
+Video solution - [https://www.loom.com/share/d5951c76c7fd4029a2110dac159300e7?sid=c10b05e4-4d2d-40a0-a66f-39247f8b8246]
 Project Implementation:
 1. Core Features Implemented:
    - Two predefined layouts with responsive design
