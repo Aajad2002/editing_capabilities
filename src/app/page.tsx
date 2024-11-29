@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Layout1 from "../components/Layout1";
 import Layout2 from "../components/Layout2";
-import { Plus, Layout, Image, LayoutTemplate } from "lucide-react";
+import { Plus, LayoutTemplate } from "lucide-react";
 import SectionPicker from "@/components/SectionPicker";
 
 const Home: React.FC = () => {

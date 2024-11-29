@@ -17,6 +17,8 @@ type Content = {
   sections: Section[];
 };
 
+type HeroFields = keyof Content['hero'];
+
 interface SectionConfig {
   id: Section;
   name: string;
@@ -48,7 +50,6 @@ const Layout2: React.FC = () => {
 
   const [content, setContent] = useState<Content>(defaultContent);
 
-  // Load content from localStorage on mount
   useEffect(() => {
     const savedContent = localStorage.getItem("layout2");
     if (savedContent) {
@@ -62,7 +63,6 @@ const Layout2: React.FC = () => {
     }
   }, []);
 
-  // Save to localStorage whenever content changes
   useEffect(() => {
     localStorage.setItem("layout2", JSON.stringify(content));
   }, [content]);
@@ -86,13 +86,16 @@ const Layout2: React.FC = () => {
 
   const handleEdit = (
     section: keyof Omit<Content, 'sections'>,
-    field: string | number,
+    field: HeroFields | number | string,
     value: string
   ) => {
     setContent((prev) => {
       const updated = { ...prev };
-      if (section === "hero") {
-        (updated.hero as any)[field] = value;
+      if (section === "hero" && typeof field === "string") {
+        updated.hero = {
+          ...updated.hero,
+          [field]: value
+        };
       } else if (section === "features" && typeof field === "number") {
         updated.features[field] = value;
       } else if (section === "footer") {
@@ -153,19 +156,17 @@ const Layout2: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Main Content */}
       <div className="flex flex-col">
         {content.sections.map((section) => (
           <div key={section}>{renderSection(section)}</div>
         ))}
       </div>
 
-      {/* Section Management Panel */}
       <div className="fixed bottom-4 right-4 z-50">
         <div className="bg-white rounded-lg shadow-lg p-4">
           <h4 className="text-sm font-semibold mb-2">Manage Sections</h4>
           <div className="space-y-2">
-            {sections.map(({ id, name, icon: Icon }) => (
+            {sections.map(({ id, icon: Icon }) => (
               <div
                 key={id}
                 className="flex items-center justify-between p-2 hover:bg-gray-50 rounded"

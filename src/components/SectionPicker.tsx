@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Layout, Image, ListChecks } from 'lucide-react';
+import { X, Image, ListChecks } from 'lucide-react';
 import Footer from './sections/Footer';
 
 interface SectionPickerProps {
@@ -23,7 +23,7 @@ const SectionPicker: React.FC<SectionPickerProps> = ({ onAdd, onClose }) => {
             <X className="w-5 h-5" />
           </button>
         </div>
-        
+
         <div className="space-y-3">
           {sections.map((section) => (
             <button

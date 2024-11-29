@@ -11,6 +11,8 @@ type Content = {
   features: string[];
 };
 
+type HeroFields = keyof Content['hero'];
+
 const defaultContent: Content = {
   hero: {
     backgroundImage: "https://up.yimg.com/ib/th?id=OIP.B8u7c37kE5ZdM5ZCRm-4hwHaFF&pid=Api&rs=1&c=1&qlt=95&w=168&h=115",
@@ -58,13 +60,16 @@ const Layout1: React.FC = () => {
 
   const handleEdit = (
     section: keyof Content,
-    field: string | number,
+    field: HeroFields | number,
     value: string
   ) => {
     setContent((prev) => {
       const updated = { ...prev };
-      if (section === "hero") {
-        (updated.hero as any)[field] = value;
+      if (section === "hero" && typeof field === "string") {
+        updated.hero = {
+          ...updated.hero,
+          [field]: value
+        };
       } else if (section === "features" && typeof field === "number") {
         updated.features[field] = value;
       }

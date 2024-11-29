@@ -1,10 +1,12 @@
 import { Editor } from '@tinymce/tinymce-react';
 import { useRef } from 'react';
 import { Editor as TinyMCEEditor } from 'tinymce';
-
+import { RawEditorOptions } from 'tinymce/tinymce';
 
 // Define types for TinyMCE configuration
-interface TinyMCEInit {
+type ToolbarMode = 'floating' | 'sliding' | 'scrolling' | 'wrap';
+
+interface TinyMCEInit extends Omit<RawEditorOptions, 'toolbar_mode'> {
   height: number;
   menubar: string | false;
   branding: boolean;
@@ -12,7 +14,7 @@ interface TinyMCEInit {
   plugins: string[];
   toolbar1: string;
   toolbar2: string;
-  toolbar_mode: string;
+  toolbar_mode: ToolbarMode;
   link_context_toolbar: boolean;
   link_assume_external_targets: boolean;
   target_list: Array<{ title: string; value: string }>;
@@ -29,14 +31,12 @@ interface TinyMCEInit {
   quickbars_insert_toolbar: boolean;
 }
 
-
 // Props interface
 interface RichTextEditorProps {
   initialValue: string;
   onEditorChange: (content: string) => void;
   setOpen: (isOpen: boolean) => void;
 }
-
 
 // Static configurations
 const TINYMCE_API_KEY = process.env.NEXT_PUBLIC_API_KEY;
@@ -67,23 +67,23 @@ const EDITOR_INIT: TinyMCEInit = {
   ],
   toolbar1: 'undo redo | formatselect | bold italic underline | link | bullist numlist | outdent indent',
   toolbar2: 'fontselect fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | removeformat',
-  toolbar_mode: 'wrap',
- 
+  toolbar_mode: 'wrap' as ToolbarMode,
+  
   link_context_toolbar: true,
   link_assume_external_targets: true,
   target_list: [
     { title: 'None', value: '' },
     { title: 'New window', value: '_blank' }
   ],
- 
+  
   advlist_bullet_styles: 'disc circle square',
   advlist_number_styles: 'default lower-alpha lower-roman upper-alpha upper-roman',
   lists_indent_on_tab: true,
- 
+  
   indent_use_margin: true,
   indent: true,
   indent_margin: '40px',
- 
+  
   font_formats: `
     Arial=arial,helvetica,sans-serif;
     Georgia=georgia,palatino,serif;
@@ -94,7 +94,7 @@ const EDITOR_INIT: TinyMCEInit = {
     Courier New='Courier New',courier,monospace;
     Comic Sans MS='Comic Sans MS',cursive,sans-serif;
   `,
- 
+  
   content_style: `
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=Poppins:wght@400;700&display=swap');
     body {
@@ -141,7 +141,6 @@ const EDITOR_INIT: TinyMCEInit = {
     }
   `,
 
-
   setup: (editor: TinyMCEEditor) => {
     editor.on('init', () => {
       editor.formatter.register({
@@ -156,17 +155,14 @@ const EDITOR_INIT: TinyMCEInit = {
       });
     });
 
-
     editor.addShortcut('meta+k', 'Insert link', () => {
       editor.execCommand('mceLink');
     });
   },
 
-
   quickbars_selection_toolbar: 'bold italic link | bullist numlist',
   quickbars_insert_toolbar: false,
 };
-
 
 export default function RichTextEditor({
   initialValue,
@@ -175,7 +171,6 @@ export default function RichTextEditor({
 }: RichTextEditorProps) {
   const editorRef = useRef<TinyMCEEditor | null>(null);
 
-
   const handleSave = () => {
     if (editorRef.current) {
       const editorContent = editorRef.current.getContent();
@@ -183,7 +178,6 @@ export default function RichTextEditor({
       setOpen(false);
     }
   };
-
 
   return (
     <div className="p-6 bg-transparent shadow-md rounded-lg">
@@ -212,4 +206,3 @@ export default function RichTextEditor({
     </div>
   );
 }
-
