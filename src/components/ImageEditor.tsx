@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 
-// Import Lucide icons with dynamic import
 const X = dynamic(() => import("lucide-react").then((mod) => mod.X), {
   ssr: false,
 });
@@ -22,18 +21,7 @@ const ImageEditorComponent: React.FC<ImageEditorProps> = ({
   const handleUrlSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (imageUrl) {
-      try {
-        const img = new window.Image();
-        img.onload = () => {
-          onUpdateImage(imageUrl);
-        };
-        img.onerror = () => {
-          alert("Failed to load image from URL. Please check the URL and try again.");
-        };
-        img.src = imageUrl;
-      } catch (error) {
-        alert("Invalid image URL");
-      }
+      onUpdateImage(imageUrl);
     }
   };
 
@@ -83,7 +71,6 @@ const ImageEditorComponent: React.FC<ImageEditorProps> = ({
   );
 };
 
-// Export with dynamic import and disabled SSR
 export default dynamic(() => Promise.resolve(ImageEditorComponent), {
   ssr: false
 });
