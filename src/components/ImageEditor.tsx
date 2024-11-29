@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
-import { errorMonitor } from "events";
 
 interface ImageEditorProps {
   currentImage: string;
