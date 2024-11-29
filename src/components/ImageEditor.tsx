@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import React, { useState, useCallback } from "react";
-import { X, ImageOff } from "lucide-react";
+import { X } from "lucide-react";
 import type { ImageProps } from 'next/image';
 
 // Import Image component dynamically to avoid SSR issues
