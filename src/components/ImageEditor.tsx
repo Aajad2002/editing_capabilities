@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { X } from "lucide-react";
+import dynamic from "next/dynamic";
+
+// Import Lucide icons with dynamic import
+const X = dynamic(() => import("lucide-react").then((mod) => mod.X), {
+  ssr: false,
+});
 
 interface ImageEditorProps {
   currentImage: string;
@@ -7,7 +12,7 @@ interface ImageEditorProps {
   onClose: () => void;
 }
 
-const ImageEditor: React.FC<ImageEditorProps> = ({
+const ImageEditorComponent: React.FC<ImageEditorProps> = ({
   currentImage,
   onUpdateImage,
   onClose,
@@ -18,7 +23,7 @@ const ImageEditor: React.FC<ImageEditorProps> = ({
     e.preventDefault();
     if (imageUrl) {
       try {
-        const img = document.createElement('img');
+        const img = new window.Image();
         img.onload = () => {
           onUpdateImage(imageUrl);
         };
@@ -27,7 +32,7 @@ const ImageEditor: React.FC<ImageEditorProps> = ({
         };
         img.src = imageUrl;
       } catch (error) {
-        alert(error || "Invalid image URL");
+        alert("Invalid image URL");
       }
     }
   };
@@ -43,7 +48,7 @@ const ImageEditor: React.FC<ImageEditorProps> = ({
               className="p-2 hover:bg-gray-100 rounded-full transition-colors"
               type="button"
             >
-              <X className="w-5 h-5 text-gray-500" />
+              {typeof window !== 'undefined' && <X className="w-5 h-5 text-gray-500" />}
             </button>
           </div>
         </div>
@@ -78,4 +83,7 @@ const ImageEditor: React.FC<ImageEditorProps> = ({
   );
 };
 
-export default ImageEditor;
+// Export with dynamic import and disabled SSR
+export default dynamic(() => Promise.resolve(ImageEditorComponent), {
+  ssr: false
+});
