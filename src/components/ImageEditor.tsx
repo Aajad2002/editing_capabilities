@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
+import { errorMonitor } from "events";
 
 interface ImageEditorProps {
   currentImage: string;
@@ -27,7 +28,7 @@ const ImageEditor: React.FC<ImageEditorProps> = ({
         };
         img.src = imageUrl;
       } catch (error) {
-        alert("Invalid image URL");
+        alert(error || "Invalid image URL");
       }
     }
   };
