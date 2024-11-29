@@ -47,21 +47,18 @@ const ImageEditor: React.FC<ImageEditorProps> = ({
   const handleUrlSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (imageUrl) {
-      try {
-        const img = document.createElement('img');
-        img.onload = () => {
-          onUpdateImage(imageUrl);
-          setImgError(false);
-        };
-        img.onerror = () => {
-          setImgError(true);
-          alert("Failed to load image from URL. Please check the URL and try again.");
-        };
-        img.src = imageUrl;
-      } catch (error: unknown) {
+
+      const img = document.createElement('img');
+      img.onload = () => {
+        onUpdateImage(imageUrl);
+        setImgError(false);
+      };
+      img.onerror = () => {
         setImgError(true);
-        alert("Invalid image URL");
-      }
+        alert("Failed to load image from URL. Please check the URL and try again.");
+      };
+      img.src = imageUrl;
+
     }
   };
 
@@ -117,11 +114,10 @@ const ImageEditor: React.FC<ImageEditorProps> = ({
           <div className="flex mt-4 space-x-1 border-b">
             <button
               onClick={() => setActiveTab('url')}
-              className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors relative ${
-                activeTab === 'url'
+              className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors relative ${activeTab === 'url'
                   ? 'text-blue-600 bg-blue-50/50'
                   : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
-              }`}
+                }`}
             >
               URL
               {activeTab === 'url' && (
@@ -130,11 +126,10 @@ const ImageEditor: React.FC<ImageEditorProps> = ({
             </button>
             <button
               onClick={() => setActiveTab('upload')}
-              className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors relative ${
-                activeTab === 'upload'
+              className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors relative ${activeTab === 'upload'
                   ? 'text-blue-600 bg-blue-50/50'
                   : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
-              }`}
+                }`}
             >
               Upload
               {activeTab === 'upload' && (
@@ -171,11 +166,10 @@ const ImageEditor: React.FC<ImageEditorProps> = ({
             </form>
           ) : (
             <div
-              className={`relative group border-2 border-dashed rounded-lg transition-all ${
-                isDragging
+              className={`relative group border-2 border-dashed rounded-lg transition-all ${isDragging
                   ? 'border-blue-500 bg-blue-50'
                   : 'border-gray-300 hover:border-blue-400'
-              }`}
+                }`}
               onDragEnter={() => setIsDragging(true)}
               onDragLeave={() => setIsDragging(false)}
               onDragOver={(e) => e.preventDefault()}
